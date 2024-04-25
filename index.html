@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+
+		<title>Pollution Pulse</title>
+		<meta name="description" content="Air pollution data visualization">
+		<meta name="author" content="JC Clark">
+		<meta content="https://typography-interaction-2324.github.io/assets/meta/link-meta.png" property="og:image">
+		<meta content="Pollution Pulse site image." property="og:image:alt">
+
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
+		<!-- <link rel="manifest" href="/site.webmanifest"> -->
+
+		<link rel="stylesheet" href="css/styles.css">
+		<link rel="stylesheet" href="css/reset.css">
+	</head>
+
+	<body>
+		<nav>
+			<ol class="nav_bar">
+				<li>
+					<a class="logo_placement btn active" href="index.html"><img class="logo" src="assets/logo.svg"><p>Pollution Pulse</p></a>
+				</li>
+				<li>
+					<a class="btn" href="about.html">About</a>
+				</li>
+			</ol>
+		</nav>
+		<header>
+			<h1 class="timezone_header">Today in<br><span id="locationId"></span></h1>
+			<!-- <h1 id="locationId">test</h1> -->
+			<div id="loader">
+				<h1>Hold Your Breath</h1>
+				<p>This site uses your location, make sure it has been allowed.</p>
+				<h3>...DATA LOADING...</h3>
+			</div>
+		</header>
+		<main>
+			<div class="pollutant_view">
+				<div class="pollutant_expanded" id="sgExpanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>Sensitive Groups</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<ol>
+							<li>People with heart or lung diseases.</li>
+							<li>People with asthma.</li>
+							<li>People with diabetes.</li>
+							<li>Older adults (65 years & older).</li>
+							<li>Children (less than 18 years old).</li>
+						</ol>
+					</div>
+				</div>
+				<div class="pollutant_expanded" id="pm2_5Expanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>PM<sub>2.5</sub> Particles</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Smoke from fires, smoke from wood heaters, car and truck exhausts, combustion emissions.</p> 
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>People who are sensitive to air pollution might experience symptoms when PM2.5 levels are high. This includes people with heart or lung conditions. Symptoms can include: wheezing, coughing, chest tightness, difficulty breathing.</p>
+						</div>
+					</div>	
+				</div>
+				<div class="pollutant_expanded" id="pm10Expanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>PM<sub>10</sub> Particles</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Dust from unsealed roads, smoke from fires, sea salt, car and truck exhaust, industry.</p>
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>PM<sub>10</sub> particles are small enough to get into your throat and lungs. High levels of PM<sub>10</sub> can make you cough, your nose run and eyes sting. .</p> 
+						</div>
+					</div>	
+				</div>
+				<div class="pollutant_expanded" id="ozoneExpanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>Ozone</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Smoke and exhaust fumes. High levels most likely to happen in enclosed spaces inside.</p> 
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>High levels of carbon monoxide can cause ‘flu-like’ symptoms, including: headaches, tiredness, dizziness, nausea.</p>
+						</div>
+					</div>	
+				</div>
+				<div class="pollutant_expanded" id="cmExpanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>Carbon Monoxide</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Forms when materials don’t burn completely. Including, burning fossil fuels like natural gas, petrol, coal and oil, wood smoke, car and truck exhausts, faulty gas heaters and ovens.</p> 
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>You can experience symptoms from breathing in high levels of carbon monoxide. High levels of carbon monoxide can cause ‘flu-like’ symptoms, including: headaches, tiredness, dizziness, nausea.</p>
+						</div>
+					</div>	
+				</div>
+				<div class="pollutant_expanded" id="sdExpanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>Sulphur Dioxide</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Coal-fired power stations, diesel vehicles, oil refineries, shipping.</p> 
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>Breathing it in can irritate your nose, throat and lungs. Symptoms include wheezing, coughing and shortness of breath. People with lung conditions like asthma are most affected by high levels.</p>
+						</div>
+					</div>	
+				</div>
+				<div class="pollutant_expanded" id="ndExpanded">
+					<div class ="pol_expanded_info">
+						<div class="pol_expanded_format">
+							<h3>Nitrogen Dioxide</h3>
+							<img src='assets/icons/exit.svg' class="line_icon close_expanded_pol">
+						</div>	
+						<div>
+							<h3>Source:</h3>
+							<p>Car and truck exhausts, coal-fired power stations, industry.</p> 
+						</div>
+						<div>
+							<h3>Health:</h3>
+							<p>Breathing it in can irritate your throat and lungs.You’re more likely to have symptoms if you are sensitive to air pollution or have a lung condition like asthma.</p>
+						</div>
+					</div>	
+				</div>
+
+				<div>
+					<div class="pollutants" id="pm2_5_count"></div>
+					<div class="pollutants" id="pm10_count"></div>
+					<div class="pollutants" id="ozone_count"></div>
+					<div class="pollutants" id="cm_count"></div>
+					<div class="pollutants" id="nd_count"></div>
+					<div class="pollutants" id="sd_count"></div>
+				</div>
+
+				<div>
+					<!-- <p id="last_reload"></p> -->
+					<div class="location_control add_blur">
+						<button id="loc_btn" class="sub_btn control_btn_active"><img src="assets/icons/location point.svg" class="line_icon" alt="Location Icon"></button>
+						<button id="nxt_btn" class="sub_btn">Next</button>
+					</div>
+					<div class="aqi_box add_blur">
+						<h3 id="aqi"></h3>	
+						<h3 id="condition"></h3>		
+					</div>
+
+					<div class="aqi_details expanded" >
+						<div class="expanded">
+							<div class="logo_placement ">
+								<img src="assets/icons/warning.svg" class="condition_icon" alt="warning icon">
+								<p id="aqi_advice"></p>
+							</div>	
+							<button  class="btn" id="minimize_button"><p>Close</p></button>
+						</div>
+						<div class="minimized">
+							<button class="expand_button btn" id="expand_button"><p>Advice &#8594;</p></button>
+						</div>
+					</div>
+
+					<div class="aqi_help">
+						<h3>What is AQI?</h3>
+						<p>Air Quality Index</p>
+						<p>*USG Unhealthy for Sensitive Groups</p>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="data_btn">></div> -->
+
+			<ol class="pollution_list">
+				<li id="pm2_5box" class="pollution_info">
+					<p>Airborne fine particulate matter usually found in smoke.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon pm2_5"></div>
+							<p>PM<sub>2.5</sub></p>
+						</div>
+						<div class="pollutant_no">
+							<p id ="pm2_5_data">0</p>
+							<h3 class="pollutant_units" id="pm2_5UnitId">unit</h3>
+						</div>
+					</div>
+				</li>
+				<li id="pm10box" class="pollution_info">
+					<p>Slightly larger particulate matter usually found in smoke & dust.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon pm10"></div>
+							<p>PM<sub>10</sub></p>
+						</div>
+						<div class="pollutant_no">
+							<p id ="pm10_data">0</p>
+							<h3 class="pollutant_units" id="pm10UnitId">unit</h3>
+						</div>
+					</div>
+				</li>
+				<li id="ozonebox" class="pollution_info">
+					<p>Harmful gas formed when pollutants react with sunlight.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon ozone"></div>
+							<p>Ozone</p>
+						</div>
+						<div class="pollutant_no">
+							<p id ="ozone_data">0</p>
+							<h3 class="pollutant_units" id="ozoneUnitId">unit</h3>
+						</div>
+					</div>
+				</li>
+				<li id="cmbox" class="pollution_info">
+					<p>Toxic gas produced by incomplete combustion of fossil fuels.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon cm"></div>
+							<p>Carbon Monoxide</p>
+						</div>
+						<div class="pollutant_no">
+							<p id ="cm_data">0</p>
+							<h3 class="pollutant_units" id="cmUnitId">unit</h3>
+						</div>
+					</div>
+				</li>
+				<li id="sdbox"class="pollution_info">
+					<p>Pungent gas released from burning fossil fuels, e.g. coal and oil.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon sd"></div>
+							<p>Sulphur Dioxide</p>
+						</div>
+						<div class="pollutant_no">
+							<p id ="sd_data">0</p>
+							<h3 class="pollutant_units" id="sdUnitId">unit</h3>
+						</div>
+					</div>
+				</li>
+				<li id="ndbox" class="pollution_info">
+					<p>Harmful gas emitted from vehicles, power plants, and combustion.</p>
+					<div class="pollutant_title">
+						<div class="pollutant_tag" >
+							<div class="icon nd"></div>
+							<p>Nitrogen Dioxide</p>
+						</div>
+						<div class="pollutant_no">
+							<p id="nd_data">0</p>
+							<h3 class="pollutant_units" id="ndUnitId"></span>unit</h3>
+						</div>
+					</div>
+				</li>
+				<!-- <button class="help_scroll">></button> -->
+			</ol>
+		</main>
+
+		<!-- script always before closing body tag -->
+		<script src="js/scripts.js"></script>
+	</body>
+
+</html>
