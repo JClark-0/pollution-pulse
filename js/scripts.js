@@ -37,6 +37,7 @@ function fetchAndSave(lat,lng){
 };
 
 
+
 // --- Location added to database ready to render ---
 function fetchData(lat,lng) {
   let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
@@ -47,6 +48,23 @@ function fetchData(lat,lng) {
     data.realLongitude = lng;
     database.splice(0, 0, data);
     renderOnScreen(database[0]);
+    console.log(database);
+  })
+  .catch((error) => {
+    console.error('Error', error);
+  });
+};
+
+// --- Searched location ready to render ---
+function searchLocation(lat,lng) {
+  let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
+  fetch(urlPollen)
+  .then((response) => response.json())
+  .then((data) => {
+    data.realLatitude = lat;
+    data.realLongitude = lng;
+    database.splice(1, 0, data);
+    renderOnScreen(database[1]);
     console.log(database);
   })
   .catch((error) => {
@@ -74,10 +92,10 @@ const showLocation = (lat, lng) => {
 };
 
 
-
 // ======== RENDER ON PAGE =========
 const renderOnScreen = (data) => {
 
+  console.log(data);
   // ------- Changes value on variable (opacity + display) -------
   document.documentElement.style.setProperty('--on_load', 100);
   document.documentElement.style.setProperty('--display', 'none');
@@ -94,7 +112,6 @@ const renderOnScreen = (data) => {
     showData(data, pollutant.name, pollutant.statId, pollutant.unitId);
     scrollPollutant(pollutant.countId, pollutant.infoBoxId); 
     expandPollutant(pollutant.infoBoxId, pollutant.expandedId);
-
   });
   // ------- AQI ------- 
   let aqi = data.current.us_aqi;
@@ -374,42 +391,36 @@ expandButton.addEventListener('click', () => {
 });
 
 
-    // document.documentElement.style.setProperty('--pm2_5', '#187D40')
-    // document.documentElement.style.setProperty('--pm10', '#187D42')
-    // document.documentElement.style.setProperty('--ozone', '#1CB659')
-    // document.documentElement.style.setProperty('--cm', '#53D5C5')
-    // document.documentElement.style.setProperty('--sd', '#63EC9A')
-    // document.documentElement.style.setProperty('--nd', '#9DE6F6')
+// ------- Search Control ------- 
 
-    // document.documentElement.style.setProperty('--pm2_5', '#9CE73D')
-    // document.documentElement.style.setProperty('--pm10', '#9CE73A')
-    // document.documentElement.style.setProperty('--ozone', '#B0F35C')
-    // document.documentElement.style.setProperty('--cm', '#CAF98D')
-    // document.documentElement.style.setProperty('--sd', '#93D77B')
-    // document.documentElement.style.setProperty('--nd', '#51A733')
+const input = document.getElementById("search");
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    const searchVal = input.value;
+    console.log(searchVal);
+    geocodingData(searchVal);
+  }
+});
 
+const geocodingData = (searchVal) => {
+  const geoCoding = `https://geocoding-api.open-meteo.com/v1/search?name=${searchVal}&count=1&language=en&format=json`;
+  fetch(geoCoding)
+  .then((response) => response.json())
+  .then((data) => { 
+    if (data.results) {
+      // const location1 = data.results[0].admin1;
+      // const location2 = data.results[0].admin2;
+      // const location3 = data.results[0].admin3;
+      const lat = data.results[0].latitude;
+      const lng = data.results[0].longitude;
+      // console.log("Searched:", location1,"-", location2, location3);
+      console.log("lat:", lat);
+      console.log("long:", lng);
 
-  //PM2.5: 
-  // createPollutant (data, 'pm2_5', 'pm2_5_count', 'pm2_5');
-  // showData (data, 'pm2_5', 'pm2_5_data' ,'pm2_5UnitId');
-  // scrollPollutant('pm2_5_count', 'pm2_5box');
-  //PM10:
-  // createPollutant (data, 'pm10', 'pm10_count', 'pm10');
-  // showData (data, 'pm10', 'pm10_data' ,'pm10UnitId');
-  // scrollPollutant('pm10_count', 'pm10box');
-  //Ozone: 
-  // createPollutant (data, 'ozone', 'ozone_count', 'ozone');
-  // showData (data, 'ozone', 'ozone_data','ozoneUnitId');
-  // scrollPollutant('ozone_count', 'ozonebox');
-  //Carbon Monoxide:
-  // createPollutant (data, 'carbon_monoxide', 'cm_count', 'cm');
-  // showData (data, 'carbon_monoxide', 'cm_data','cmUnitId');
-  // scrollPollutant('cm_count', 'cmbox');
-  //Nitrogen Dioxide: 
-  // createPollutant (data, 'nitrogen_dioxide', 'nd_count', 'nd');
-  // showData (data, 'nitrogen_dioxide', 'nd_data', 'ndUnitId');
-  // scrollPollutant('nd_count', 'ndbox');
-  //Sulphur Dioxide:
-  // createPollutant (data, 'sulphur_dioxide', 'sd_count', 'sd');
-  // showData (data, 'sulphur_dioxide', 'sd_data','sdUnitId');
-  // scrollPollutant('sd_count', 'sdbox');
+      showLocation(lat,lng);
+      searchLocation(lat,lng);
+    } else {
+      console.log("City not found, try again.");
+    }
+  })
+};

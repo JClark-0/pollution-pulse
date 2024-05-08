@@ -100,6 +100,16 @@ main {
     padding-right: var(--padding);
 }
 
+.search_box {
+    background: var(--card-bg);
+    padding: var(--padding);
+    border-radius: var(--btn-radius);
+}
+
+input {
+    margin-left: var(--padding);
+}
+
 .sg {
     text-decoration: underline;
 }
