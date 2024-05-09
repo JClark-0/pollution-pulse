@@ -367,29 +367,11 @@ nextLocation.onclick = () => {
 };
 
 currentLocation.onclick = () => {
-  currentLocationIndex = 0;
+  currentLocationIndex = 0
   renderOnScreen(database[currentLocationIndex]);
   currentLocation.classList.add("control_btn_active");
   nextLocation.classList.remove("control_btn_active");
 };
-
-
-
-// ------- Advice Control ------- 
-const minimizeButton = document.getElementById('minimize_button');
-const expandButton = document.getElementById('expand_button');
-const aqiDetails = document.querySelector('.aqi_details');
-
-minimizeButton.addEventListener('click', () => {
-    aqiDetails.classList.add('minimized');
-    aqiDetails.classList.remove('expanded');
-  });
-
-expandButton.addEventListener('click', () => {
-  aqiDetails.classList.remove('minimized');
-  aqiDetails.classList.add('expanded');
-});
-
 
 // ------- Search Control ------- 
 
@@ -397,8 +379,10 @@ const input = document.getElementById("search");
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     const searchVal = input.value;
+    input.value = ""; 
     console.log(searchVal);
     geocodingData(searchVal);
+    currentLocation.classList.remove("control_btn_active"); //remove active state of current location button
   }
 });
 
@@ -424,3 +408,19 @@ const geocodingData = (searchVal) => {
     }
   })
 };
+
+
+// ------- Advice Control ------- 
+const minimizeButton = document.getElementById('minimize_button');
+const expandButton = document.getElementById('expand_button');
+const aqiDetails = document.querySelector('.aqi_details');
+
+minimizeButton.addEventListener('click', () => {
+    aqiDetails.classList.add('minimized');
+    aqiDetails.classList.remove('expanded');
+  });
+
+expandButton.addEventListener('click', () => {
+  aqiDetails.classList.remove('minimized');
+  aqiDetails.classList.add('expanded');
+});
