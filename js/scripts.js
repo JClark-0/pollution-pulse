@@ -1,76 +1,96 @@
 
 
-// ------- Latitude & Longitude ------- 
+//description of product 
+
+// ------- Create lat lng Database -------
+let database = [];
+
+// ------- Latitude & Longitude Current Location ------- 
 document.addEventListener('DOMContentLoaded', () => {
   navigator.geolocation.getCurrentPosition((position) => {
     lat =(position.coords.latitude);
     lng = (position.coords.longitude);
     fetchData(lat, lng); 
-    // showLocation (lat, lng);
   });
 
-  fetch('json/data.json')
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(location => {
-          const lat = location.lat
-          const lng = location.lng
-          fetchAndSave(lat, lng);
-        });
-    })
+  // fetch('json/data.json')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       data.forEach(location => {
+  //         const lat = location.lat
+  //         const lng = location.lng
+  //         fetchAndSave(lat, lng);
+  //       });
+  //   })
 });
 
-
-// ------- Create lat lng Database -------
-let database = [];
-// --- JSON Lat & Lng through API pushed to database ---
-function fetchAndSave(lat,lng){
-
-  let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
-  fetch(urlPollen)
-  .then((response) => response.json())
-  .then((data) => { 
-    data.realLatitude = lat;
-    data.realLongitude = lng;
-    database.push(data)
-  })
-};
-
-
-
-// --- Location added to database ready to render ---
 function fetchData(lat,lng) {
-  let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
-  fetch(urlPollen)
+  let urlPollutant = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
+  fetch(urlPollutant)
   .then((response) => response.json())
   .then((data) => {
     data.realLatitude = lat;
     data.realLongitude = lng;
     database.splice(0, 0, data);
     renderOnScreen(database[0]);
-    console.log(database);
+    console.log("fetchdata database:", database);
   })
   .catch((error) => {
     console.error('Error', error);
   });
 };
 
+// ------- Get lat & lng based on searched location ------- 
+const geocodingData = (searchVal) => {
+  const geoCoding = `https://geocoding-api.open-meteo.com/v1/search?name=${searchVal}&count=1&language=en&format=json`;
+  fetch(geoCoding)
+  .then((response) => response.json())
+  .then((data) => { 
+    if (data.results) {
+      const lat = data.results[0].latitude;
+      const lng = data.results[0].longitude;
+      showLocation(lat,lng);
+      searchLocation(lat, lng);
+    } else {
+      console.log("City not found, try again.");
+    }
+  })
+};
+
 // --- Searched location ready to render ---
 function searchLocation(lat,lng) {
-  let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
-  fetch(urlPollen)
+  let urlPollutant = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
+  fetch(urlPollutant)
   .then((response) => response.json())
   .then((data) => {
     data.realLatitude = lat;
     data.realLongitude = lng;
-    database.splice(1, 0, data);
-    renderOnScreen(database[1]);
-    console.log(database);
+    database.push(data)
+    console.log("searched location database:", database);
   })
   .catch((error) => {
     console.error('Error', error);
   });
 };
+
+// --- JSON Lat & Lng through API pushed to database ---
+// function fetchAndSave(lat,lng){
+
+//   let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
+//   fetch(urlPollen)
+//   .then((response) => response.json())
+//   .then((data) => { 
+//     data.realLatitude = lat;
+//     data.realLongitude = lng;
+//     database.push(data)
+//   })
+// };
+
+
+
+
+
+
 
 
 // ------- Show Location Name ------- 
@@ -79,7 +99,7 @@ const showLocation = (lat, lng) => {
   fetch(`https://us1.locationiq.com/v1/reverse?lat=${lat}&lon=${lng}&format=json&key=pk.83485c19ebc3983a826192780bdd4e9c`, options)
     .then(response => response.json())
     .then(response => { 
-      console.log(response);
+      // console.log(response);
       let locationName = document.getElementById('locationId');
         if (response.address.country.includes('United States of America')) {
           locationName.innerHTML = response.address.city + ', ' + response.address.state;
@@ -95,7 +115,7 @@ const showLocation = (lat, lng) => {
 // ======== RENDER ON PAGE =========
 const renderOnScreen = (data) => {
 
-  console.log(data);
+  console.log("data rendering:", data);
   // ------- Changes value on variable (opacity + display) -------
   document.documentElement.style.setProperty('--on_load', 100);
   document.documentElement.style.setProperty('--display', 'none');
@@ -113,11 +133,23 @@ const renderOnScreen = (data) => {
     scrollPollutant(pollutant.countId, pollutant.infoBoxId); 
     expandPollutant(pollutant.infoBoxId, pollutant.expandedId);
   });
+
+  // ------- Show Timezone ------- 
+  const timezone = data.timezone;
+  // Get current time in UTC
+  const currentTimeUTC = new Date();
+  // Get current time in the specified timezone
+  const currentTimeInTimezone = new Date(currentTimeUTC.toLocaleString("en-US", { timeZone: timezone }));
+  // Format the time however you want
+  const formattedTime = currentTimeInTimezone.toLocaleString("en-US", { timeZone: timezone });
+  // console.log("Current time in", timezone, "is:", formattedTime);
+
   // ------- AQI ------- 
   let aqi = data.current.us_aqi;
   let aqi_num = document.getElementById('aqi');
   aqi_num.innerHTML = aqi +' AQI';
   aqiCondition(aqi);
+
 };
 
 
@@ -147,16 +179,13 @@ const createPollutant = (data, name, countId, styleClass) => {
     //Animate circles
     circle.style.left = Math.random() * window.innerWidth + 'px';
     circle.style.top = Math.random() * window.innerHeight + 'px';
-
     let directionX = Math.random(); 
     let directionY = Math.random(); 
-
     circle.style.animation = `moveSpore ${Math.random() * 40 + 20}s linear infinite`;
     circle.style.animationDirection = directionX === 1 ? 'normal' : 'reverse';
     
     //Display
     pollutantCountElement.appendChild(circle);
-    
   }
 };
 
@@ -175,14 +204,14 @@ const scrollPollutant = (countId, infoBoxId) => {
   var targetBox = document.getElementById(infoBoxId);
   var listItem = document.getElementById(countId);
   
-    listItem.addEventListener('click', function(){
-      targetBox.scrollIntoView({ behavior: 'smooth' });
-      targetBox.classList.add('box_highlight');
+  listItem.addEventListener('click', function(){
+    targetBox.scrollIntoView({ behavior: 'smooth' });
+    targetBox.classList.add('box_highlight');
 
-      setTimeout(function() {
-        targetBox.classList.remove('box_highlight');
-      }, 1000);
-    });
+    setTimeout(function() {
+      targetBox.classList.remove('box_highlight');
+    }, 1000);
+  });
 }
 
 
@@ -212,15 +241,7 @@ const expandPollutant = (infoBoxId, expandedId) => {
       });
     };
   };
-};
-
-
-
-    // if (name === 'pm2_5'){
-    //   pollutantExpanded.innerHTML ='hello pm25';
-    // } else if (name === 'pm10') {
-    //   pollutantExpanded.innerHTML ='hello pm10'
-    // }
+}
 
 
 // ======== AQI FUNCTIONS =========
@@ -316,6 +337,7 @@ const aqiCondition = (aqi) => {
       '--btn-color': 'ff5050'
     });
   }
+
   document.getElementById('condition').textContent = conditionText;
   document.getElementById('aqi_advice').innerHTML = adviceText;
   document.querySelector('.condition_icon').style.setProperty('display', warningIcon);
@@ -347,34 +369,20 @@ const aqiCondition = (aqi) => {
 
 
 // ======== PAGE CONTROL =========
-
-// ------- Location Control ------- 
-const nextLocation = document.getElementById('nxt_btn');
 const currentLocation = document.getElementById('loc_btn');
+const saveLocation = document.getElementById('save_btn');
 let currentLocationIndex = 0;
 
-nextLocation.onclick = () => {
-  if (currentLocationIndex < database.length-1){
-    currentLocationIndex++;
-    currentLocation.classList.remove("control_btn_active");
-  } else {
-    currentLocationIndex = 0;
-    nextLocation.classList.remove("control_btn_active");
-    currentLocation.classList.add("control_btn_active");
-  }
-  console.log(currentLocationIndex);
-  renderOnScreen(database[currentLocationIndex]);
-};
 
+// ------- Current Location  ------- 
 currentLocation.onclick = () => {
   currentLocationIndex = 0
   renderOnScreen(database[currentLocationIndex]);
   currentLocation.classList.add("control_btn_active");
-  nextLocation.classList.remove("control_btn_active");
+  // nextLocation.classList.remove("control_btn_active");
 };
 
-// ------- Search Control ------- 
-
+// ------- Search Control (Enter) ------- 
 const input = document.getElementById("search");
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -386,28 +394,10 @@ input.addEventListener("keydown", (event) => {
   }
 });
 
-const geocodingData = (searchVal) => {
-  const geoCoding = `https://geocoding-api.open-meteo.com/v1/search?name=${searchVal}&count=1&language=en&format=json`;
-  fetch(geoCoding)
-  .then((response) => response.json())
-  .then((data) => { 
-    if (data.results) {
-      // const location1 = data.results[0].admin1;
-      // const location2 = data.results[0].admin2;
-      // const location3 = data.results[0].admin3;
-      const lat = data.results[0].latitude;
-      const lng = data.results[0].longitude;
-      // console.log("Searched:", location1,"-", location2, location3);
-      console.log("lat:", lat);
-      console.log("long:", lng);
-
-      showLocation(lat,lng);
-      searchLocation(lat,lng);
-    } else {
-      console.log("City not found, try again.");
-    }
-  })
-};
+// --- Location added to database ready to render ---
+// saveLocation.onclick = () => {
+//   searchLocation(lat, lng);
+//  };
 
 
 // ------- Advice Control ------- 
@@ -424,3 +414,20 @@ expandButton.addEventListener('click', () => {
   aqiDetails.classList.remove('minimized');
   aqiDetails.classList.add('expanded');
 });
+
+
+
+// const nextLocation = document.getElementById('nxt_btn');
+
+// nextLocation.onclick = () => {
+//   if (currentLocationIndex < database.length-1){
+//     currentLocationIndex++;
+//     currentLocation.classList.remove("control_btn_active");
+//   } else {
+//     currentLocationIndex = 0;
+//     nextLocation.classList.remove("control_btn_active");
+//     currentLocation.classList.add("control_btn_active");
+//   }
+//   console.log(currentLocationIndex);
+//   renderOnScreen(database[currentLocationIndex]);
+// };

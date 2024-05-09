@@ -27,23 +27,19 @@
 				<li>
 					<a class="logo_placement btn active" href="index.html"><img class="logo" src="assets/logo.svg"><p>Pollution Pulse</p></a>
 				</li>
-				<li class="search_box">
-					<input type="text" id="search" placeholder="Search City...">
-					<img class="line_icon" src="assets/icons/exit.svg">
-				</li>
 				<li>
 					<a class="btn" href="about.html">About</a>
 				</li>
 			</ol>
 		</nav>
 		<header>
-			<h1 class="timezone_header">Today in<br><span id="locationId"></span></h1>
-			<!-- <h1 id="locationId">test</h1> -->
 			<div id="loader">
 				<h1>Hold Your Breath</h1>
 				<p>This site uses your location, make sure it has been allowed.</p>
 				<h3>...DATA LOADING...</h3>
 			</div>
+			<h1 class="timezone_header">Today in<br><span id="locationId"></span></h1>
+			<button id="save_btn">Save</button>
 		</header>
 		<main>
 			<div class="pollutant_view">
@@ -172,7 +168,11 @@
 					<!-- <p id="last_reload"></p> -->
 					<div class="location_control add_blur">
 						<button id="loc_btn" class="sub_btn control_btn_active"><img src="assets/icons/location point.svg" class="line_icon" alt="Location Icon"></button>
-						<button id="nxt_btn" class="sub_btn">Next</button>
+						<div class="search_box">
+							<input type="text" id="search" placeholder="Search City...">
+							<img class="line_icon" src="assets/icons/exit.svg">
+						</div>
+						<!-- <button id="nxt_btn" class="sub_btn">Next</button> -->
 					</div>
 					<div class="aqi_box add_blur">
 						<h3 id="aqi"></h3>	
