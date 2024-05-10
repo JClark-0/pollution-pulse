@@ -12,16 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     lng = (position.coords.longitude);
     fetchData(lat, lng); 
   });
-
-  // fetch('json/data.json')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       data.forEach(location => {
-  //         const lat = location.lat
-  //         const lng = location.lng
-  //         fetchAndSave(lat, lng);
-  //       });
-  //   })
 });
 
 function fetchData(lat,lng) {
@@ -33,7 +23,7 @@ function fetchData(lat,lng) {
     data.realLongitude = lng;
     database.splice(0, 0, data);
     renderOnScreen(database[0]);
-    console.log("fetchdata database:", database);
+    // console.log("fetchdata database:", database);
   })
   .catch((error) => {
     console.error('Error', error);
@@ -49,13 +39,14 @@ const geocodingData = (searchVal) => {
     if (data.results) {
       const lat = data.results[0].latitude;
       const lng = data.results[0].longitude;
-      showLocation(lat,lng);
       searchLocation(lat, lng);
     } else {
       console.log("City not found, try again.");
     }
   })
 };
+
+
 
 // --- Searched location ready to render ---
 function searchLocation(lat,lng) {
@@ -66,31 +57,14 @@ function searchLocation(lat,lng) {
     data.realLatitude = lat;
     data.realLongitude = lng;
     database.push(data)
-    console.log("searched location database:", database);
+    renderOnScreen(database[database.length-1]);
+    showLocation(lat,lng);
+    // console.log("searched location database:", database);
   })
   .catch((error) => {
     console.error('Error', error);
   });
 };
-
-// --- JSON Lat & Lng through API pushed to database ---
-// function fetchAndSave(lat,lng){
-
-//   let urlPollen = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,ammonia&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10,us_aqi_nitrogen_dioxide,us_aqi_carbon_monoxide,us_aqi_ozone,us_aqi_sulphur_dioxide&timezone=auto&past_hours=1&forecast_days=1&forecast_hours=1`;
-//   fetch(urlPollen)
-//   .then((response) => response.json())
-//   .then((data) => { 
-//     data.realLatitude = lat;
-//     data.realLongitude = lng;
-//     database.push(data)
-//   })
-// };
-
-
-
-
-
-
 
 
 // ------- Show Location Name ------- 
@@ -114,18 +88,18 @@ const showLocation = (lat, lng) => {
 
 // ======== RENDER ON PAGE =========
 const renderOnScreen = (data) => {
-
-  console.log("data rendering:", data);
+  
   // ------- Changes value on variable (opacity + display) -------
   document.documentElement.style.setProperty('--on_load', 100);
   document.documentElement.style.setProperty('--display', 'none');
+
+    // ------- Show real Location -------
+    showLocation (data.realLatitude, data.realLongitude);
 
   // ------- Clear Pollutant circles -------
   document.querySelectorAll('.pollutants').forEach(box => {
     box.innerHTML = ''; 
   });
-  // ------- Show real Location -------
-  showLocation (data.realLatitude, data.realLongitude);
   // ------- Calling Pollutant Functions ------- 
   pollutants.forEach(pollutant => {
     createPollutant( data, pollutant.name, pollutant.countId, pollutant.styleClass);
@@ -134,15 +108,25 @@ const renderOnScreen = (data) => {
     expandPollutant(pollutant.infoBoxId, pollutant.expandedId);
   });
 
-  // ------- Show Timezone ------- 
+
+
+  // ------- LOCAL TIME ------- 
   const timezone = data.timezone;
-  // Get current time in UTC
   const currentTimeUTC = new Date();
-  // Get current time in the specified timezone
   const currentTimeInTimezone = new Date(currentTimeUTC.toLocaleString("en-US", { timeZone: timezone }));
-  // Format the time however you want
-  const formattedTime = currentTimeInTimezone.toLocaleString("en-US", { timeZone: timezone });
-  // console.log("Current time in", timezone, "is:", formattedTime);
+  const formattedTime = currentTimeInTimezone.toLocaleTimeString("en-US", { timeZone: timezone, hour12: false, hour: '2-digit', minute: '2-digit' });
+  // ------- Show local time ------- 
+  let localTime = document.getElementById('localTime');
+  localTime.innerHTML = formattedTime;
+  // ------- Show icon based on time ------- 
+  const hour = currentTimeInTimezone.getHours();
+  let icon = document.getElementById('timeIcon');
+  if (hour >= 6 && hour < 18) {
+      icon.src = "assets/icons/sun.svg";
+  } else {
+      icon.src = "assets/icons/night.svg";
+  }
+  
 
   // ------- AQI ------- 
   let aqi = data.current.us_aqi;
@@ -151,6 +135,7 @@ const renderOnScreen = (data) => {
   aqiCondition(aqi);
 
 };
+
 
 
 
@@ -370,7 +355,6 @@ const aqiCondition = (aqi) => {
 
 // ======== PAGE CONTROL =========
 const currentLocation = document.getElementById('loc_btn');
-const saveLocation = document.getElementById('save_btn');
 let currentLocationIndex = 0;
 
 
@@ -390,9 +374,21 @@ input.addEventListener("keydown", (event) => {
     input.value = ""; 
     console.log(searchVal);
     geocodingData(searchVal);
+
     currentLocation.classList.remove("control_btn_active"); //remove active state of current location button
+
   }
 });
+
+// nextLocation.onclick = () => {
+//   if (currentLocationIndex < database.length-1){
+//     currentLocationIndex++;
+//     currentLocation.classList.remove("control_btn_active");
+//   } else {
+//     currentLocationIndex = 0;
+//     nextLocation.classList.remove("control_btn_active");
+//     currentLocation.classList.add("control_btn_active");
+//   }
 
 // --- Location added to database ready to render ---
 // saveLocation.onclick = () => {
@@ -419,6 +415,9 @@ expandButton.addEventListener('click', () => {
 
 // const nextLocation = document.getElementById('nxt_btn');
 
+//   console.log(currentLocationIndex);
+//   renderOnScreen(database[currentLocationIndex]);
+
 // nextLocation.onclick = () => {
 //   if (currentLocationIndex < database.length-1){
 //     currentLocationIndex++;
@@ -428,6 +427,28 @@ expandButton.addEventListener('click', () => {
 //     nextLocation.classList.remove("control_btn_active");
 //     currentLocation.classList.add("control_btn_active");
 //   }
-//   console.log(currentLocationIndex);
-//   renderOnScreen(database[currentLocationIndex]);
+
 // };
+
+// currentLocationIndex = database.length+1;
+// renderOnScreen(database[currentLocationIndex]);
+
+
+
+// const mostRecent = database[database.length-1];
+// localStorage.setItem('data', JSON.stringify(mostRecent));
+// console.log(mostRecent);
+
+// const userData = JSON.parse(localStorage.getItem('data'));
+// console.log(userData);
+
+
+  // fetch('json/data.json')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       data.forEach(location => {
+  //         const lat = location.lat
+  //         const lng = location.lng
+  //         fetchAndSave(lat, lng);
+  //       });
+  //   })

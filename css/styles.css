@@ -61,7 +61,13 @@ html {
 #loader {
     display: var(--display);
     text-align: center;
-    width:100%;
+    width:100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items:end;
 }
 
 body {
@@ -79,6 +85,7 @@ main {
     display: flex; 
     flex-direction: column;
     justify-content: space-between;
+    opacity: var(--on_load);
 }
 .nav_bar {
     display:flex;
@@ -100,6 +107,20 @@ main {
     padding-right: var(--padding);
 }
 
+.time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    padding-top: var(--padding);
+    padding-bottom: var(--padding);
+    padding-left: calc(var(--padding)*2);
+    padding-right:calc(var(--padding)*2);
+    border-radius: var(--btn-radius);
+    opacity: var(--on_load);
+    width: 90px;
+}
+
 .search_box {
     background: var(--card-bg);
     padding: var(--padding);
@@ -108,6 +129,7 @@ main {
 
 input {
     margin-left: var(--padding);
+    opacity: var(--on_load);
 }
 
 .sg {
@@ -124,9 +146,6 @@ input {
     cursor: pointer;
 }
 
-/* .btn:hover {
-    transform: var(--btn-scale);
-} */
 
 .active {
     background-color: var(--btn-color);
@@ -141,7 +160,6 @@ button {
     border-radius: var(--btn-radius);
     padding-left: calc(var(--padding)*2);
     padding-right: calc(var(--padding)*2);
-    opacity: var(--on_load);
     transition: all .4s;
 }
 
@@ -246,7 +264,7 @@ sub {
     position: absolute; 
     right: 0;
     bottom: 0;
-    opacity: var(--on_load);
+
 
 }
 
@@ -290,7 +308,6 @@ sub {
 
 .aqi_details {
     border-radius: var(--radius);
-    opacity: var(--on_load);
     background-color: var(--card-bg);
     padding: calc(var(--padding)*3);
     z-index: 2;
@@ -404,7 +421,6 @@ sub {
     gap: calc(var(--padding)*3);
     overflow-x: auto;
     margin-top: calc(var(--padding) * 4);
-    opacity: var(--on_load);
 }
 .pollution_info {
     display: flex;
