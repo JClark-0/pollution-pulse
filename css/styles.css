@@ -535,6 +535,7 @@ sub {
     bottom: 0;
     right: 0;
     background-color: white;
+    color: black;
     font-weight: 700;
     padding: calc(var(--padding)*3);
     margin-right: var(--gutters);
@@ -559,6 +560,7 @@ sub {
 }
 
 .about_main {
+    opacity: 100%;
     display: flex;
     flex-direction: column;
     gap: calc(var(--gutters)*4);

@@ -1,8 +1,9 @@
 
 
-//description of product 
+//Pollution Pulse uses AQI air quality data to give the AQI and pollutant concentrations of your current location and others you choose to search.
+//Make sure location is allowed.
 
-// ------- Create lat lng Database -------
+// ------- Create Database -------
 let database = [];
 
 // ------- Latitude & Longitude Current Location ------- 
@@ -112,14 +113,14 @@ const renderOnScreen = (data) => {
 
   // ------- LOCAL TIME ------- 
   const timezone = data.timezone;
-  const currentTimeUTC = new Date();
-  const currentTimeInTimezone = new Date(currentTimeUTC.toLocaleString("en-US", { timeZone: timezone }));
-  const formattedTime = currentTimeInTimezone.toLocaleTimeString("en-US", { timeZone: timezone, hour12: false, hour: '2-digit', minute: '2-digit' });
+  const currentTimeTimezone = new Date().toLocaleTimeString("en-US", { timeZone: timezone, hour12: false, hour: '2-digit', minute: '2-digit' });
   // ------- Show local time ------- 
   let localTime = document.getElementById('localTime');
-  localTime.innerHTML = formattedTime;
+  localTime.innerHTML = currentTimeTimezone;
+  // ------- Extract hour from the formatted time -------
+  const hour = parseInt(currentTimeTimezone.split(":")[0]);
+  
   // ------- Show icon based on time ------- 
-  const hour = currentTimeInTimezone.getHours();
   let icon = document.getElementById('timeIcon');
   if (hour >= 6 && hour < 18) {
       icon.src = "assets/icons/sun.svg";
