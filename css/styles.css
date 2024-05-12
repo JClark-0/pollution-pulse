@@ -128,6 +128,7 @@ main {
 }
 
 input {
+    width: 100px;
     margin-left: var(--padding);
     opacity: var(--on_load);
 }
@@ -626,6 +627,10 @@ footer {
         --header-size: calc(var(--base-size)*1.8);
         --base-size: 16px;
         --gutters: 14px;
+    }
+
+    input {
+        width: 150px;
     }
     
     main {
