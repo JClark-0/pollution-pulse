@@ -328,7 +328,10 @@ const aqiCondition = (aqi) => {
   document.getElementById('aqi_advice').innerHTML = adviceText;
   document.querySelector('.condition_icon').style.setProperty('display', warningIcon);
 
-  const sgIdCheck = document.getElementById('sgId');
+  
+};
+
+const sgIdCheck = document.getElementById('sgId');
   if (sgIdCheck) {
 
     sgIdCheck.onclick = () => {
@@ -350,9 +353,6 @@ const aqiCondition = (aqi) => {
       })
     };
   }
-};
-
-
 
 // ======== PAGE CONTROL =========
 const currentLocation = document.getElementById('loc_btn');
@@ -364,7 +364,6 @@ currentLocation.onclick = () => {
   currentLocationIndex = 0
   renderOnScreen(database[currentLocationIndex]);
   currentLocation.classList.add("control_btn_active");
-  // nextLocation.classList.remove("control_btn_active");
 };
 
 // ------- Search Control (Enter) ------- 
@@ -377,24 +376,9 @@ input.addEventListener("keydown", (event) => {
     geocodingData(searchVal);
 
     currentLocation.classList.remove("control_btn_active"); //remove active state of current location button
-
   }
 });
 
-// nextLocation.onclick = () => {
-//   if (currentLocationIndex < database.length-1){
-//     currentLocationIndex++;
-//     currentLocation.classList.remove("control_btn_active");
-//   } else {
-//     currentLocationIndex = 0;
-//     nextLocation.classList.remove("control_btn_active");
-//     currentLocation.classList.add("control_btn_active");
-//   }
-
-// --- Location added to database ready to render ---
-// saveLocation.onclick = () => {
-//   searchLocation(lat, lng);
-//  };
 
 
 // ------- Advice Control ------- 
@@ -411,45 +395,3 @@ expandButton.addEventListener('click', () => {
   aqiDetails.classList.remove('minimized');
   aqiDetails.classList.add('expanded');
 });
-
-
-
-// const nextLocation = document.getElementById('nxt_btn');
-
-//   console.log(currentLocationIndex);
-//   renderOnScreen(database[currentLocationIndex]);
-
-// nextLocation.onclick = () => {
-//   if (currentLocationIndex < database.length-1){
-//     currentLocationIndex++;
-//     currentLocation.classList.remove("control_btn_active");
-//   } else {
-//     currentLocationIndex = 0;
-//     nextLocation.classList.remove("control_btn_active");
-//     currentLocation.classList.add("control_btn_active");
-//   }
-
-// };
-
-// currentLocationIndex = database.length+1;
-// renderOnScreen(database[currentLocationIndex]);
-
-
-
-// const mostRecent = database[database.length-1];
-// localStorage.setItem('data', JSON.stringify(mostRecent));
-// console.log(mostRecent);
-
-// const userData = JSON.parse(localStorage.getItem('data'));
-// console.log(userData);
-
-
-  // fetch('json/data.json')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       data.forEach(location => {
-  //         const lat = location.lat
-  //         const lng = location.lng
-  //         fetchAndSave(lat, lng);
-  //       });
-  //   })

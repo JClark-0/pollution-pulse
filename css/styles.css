@@ -668,31 +668,3 @@ footer {
         height: calc(100dvh - 260px);
     }
   }
-
-
-  /* .help_scroll {
-    background-color: var(--btn-color);
-    border-radius: var(--btn-radius);
-    height: 20px;
-    position: absolute;
-    right: 0;
-    margin-top: var(--gutters);
-    margin-right: calc(var(--gutters)*4);
-    transition: all 1s;
-    transform: scale(1.04);
-    display: none;
-
-    .pollution_list:hover .help_scroll {
-    animation: pulse 1s infinite;
-    display: block;
-}
-@keyframes pulse {
-    100% {
-    transform: scale(1);
-    }
-    0% {
-    transform: scale(.91);
-    }
-}
-
-} */
