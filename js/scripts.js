@@ -42,6 +42,7 @@ const geocodingData = (searchVal) => {
       const lng = data.results[0].longitude;
       searchLocation(lat, lng);
     } else {
+      alert("City not found, try again.");
       console.log("City not found, try again.");
     }
   })
@@ -395,3 +396,4 @@ expandButton.addEventListener('click', () => {
   aqiDetails.classList.remove('minimized');
   aqiDetails.classList.add('expanded');
 });
+
