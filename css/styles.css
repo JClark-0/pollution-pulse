@@ -700,4 +700,9 @@ footer {
     .pollutant_view, .pollution_list {
         height: calc(100dvh - 260px);
     }
+
+    .circle {
+        height: 360px;
+        width: 360px;
+    }
   }
