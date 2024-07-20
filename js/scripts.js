@@ -93,6 +93,7 @@ const renderOnScreen = (data) => {
   
   // ------- Changes value on variable (opacity + display) -------
   document.documentElement.style.setProperty('--on_load', 100);
+  document.documentElement.style.setProperty('--on_load_flex', 'flex');
   document.documentElement.style.setProperty('--display', 'none');
 
     // ------- Show real Location -------

@@ -44,6 +44,7 @@
     /* Before Fetch  */
     --on_load: 0;
     --display: block;
+    --on_load_flex: none;
 
 }
 
@@ -98,7 +99,7 @@ aside {
 }
 
 header {
-    display: flex;
+    display: var(--on_load_flex);
     justify-content: space-between;
     align-items:end;
 }
@@ -115,7 +116,7 @@ body {
 }
 
 main {
-    display: flex; 
+    display: var(--on_load_flex); 
     flex-direction: column;
     justify-content: space-between;
     opacity: var(--on_load);
