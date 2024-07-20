@@ -32,12 +32,18 @@
 				</li>
 			</ol>
 		</nav>
-		<header>
+		<aside>
 			<div id="loader">
-				<h1>Hold Your Breath</h1>
-				<p>This site uses your location, make sure it has been allowed.</p>
-				<h3>...DATA LOADING...</h3>
+				<div class='circle pulsating-circle'>
+					<h1>Data<br>Loading</h1>
+					<h3>AIR QUALITY</h3>
+				</div>
+				<div>
+					<p>This site uses your location, please make sure it has been allowed.</p>
+				</div>
 			</div>
+		</aside> 
+		<header>
 			<div>
 				<h1 class="timezone_header">Today in<br><span id="locationId"></span></h1>
 			</div>
@@ -45,7 +51,6 @@
 				<p id="localTime">Time</p>
 				<img id="timeIcon" class="line_icon">
 			</div>
-			
 		</header>
 		<main>
 			<div class="pollutant_view">
